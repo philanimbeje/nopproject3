@@ -30,7 +30,12 @@ public partial class PdfSettings : ISettings
     /// <summary>
     /// Gets or sets the font name that will be used
     /// </summary>
-    public string FontFamily { get; set; }
+    public string LtrFontName { get; set; }
+
+    /// <summary>
+    /// Gets or sets the font name that will be used
+    /// </summary>
+    public string RtlFontName { get; set; }
 
     /// <summary>
     /// Gets or sets the text that will appear at the bottom of invoices (column 1)

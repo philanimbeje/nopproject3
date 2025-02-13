@@ -5,6 +5,7 @@ using Nop.Core.Domain.Vendors;
 using Nop.Core.Infrastructure;
 using Nop.Data;
 using Nop.Data.Migrations;
+using Nop.Services.Common;
 using Nop.Services.Configuration;
 
 namespace Nop.Web.Framework.Migrations.UpgradeTo490;
@@ -43,6 +44,24 @@ public class SettingMigration : MigrationBase
         {
             vendorSettings.MaximumProductPicturesNumber = 5;
             settingService.SaveSetting(vendorSettings, settings => settings.MaximumProductPicturesNumber);
+        }
+
+        //#7477
+        var pdfSettings = settingService.LoadSetting<PdfSettings>();
+        var displayAttributeCombinationImagesOnly = settingService.GetSetting("pdfsettings.fontfamily");
+        if (displayAttributeCombinationImagesOnly is not null)
+            settingService.DeleteSetting(displayAttributeCombinationImagesOnly);
+
+        if (!settingService.SettingExists(pdfSettings, settings => settings.RtlFontName))
+        {
+            pdfSettings.RtlFontName = NopCommonDefaults.PdfRtlFontName;
+            settingService.SaveSetting(pdfSettings, settings => pdfSettings.RtlFontName);
+        }
+
+        if (!settingService.SettingExists(pdfSettings, settings => settings.LtrFontName))
+        {
+            pdfSettings.LtrFontName = NopCommonDefaults.PdfLtrFontName;
+            settingService.SaveSetting(pdfSettings, settings => pdfSettings.LtrFontName);
         }
     }
 
