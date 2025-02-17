@@ -91,6 +91,9 @@ public partial class NopSelectTagHelper : TagHelper
             if (bool.TryParse(IsMultiple, out var multiple) && multiple)
                 templateName = $"Multi{templateName}";
 
+            if (For?.ModelExplorer.ModelType == typeof(List<string>) || For?.ModelExplorer.ModelType == typeof(string))
+                templateName = $"{templateName}String";
+
             var selectList = _htmlHelper.Editor(tagName, templateName, new { htmlAttributes, SelectList = Items, MinimumItemsForSearch = _adminAreaSettings.MinimumDropdownItemsForSearch });
             output.Content.SetHtmlContent(await selectList.RenderHtmlContentAsync());
         }

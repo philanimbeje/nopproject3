@@ -1,39 +1,13 @@
-﻿@model dynamic
+﻿@model int
 
 <div class="select2-blue">
     <select asp-for="@Model" asp-items="@((IEnumerable<SelectListItem>)ViewData["SelectList"])" class="form-control select2" style="width: 100%;" data-dropdown-css-class="select2-blue"></select>
 </div>
 
-@if (Model is int)
-{
-    <script>
-        $(function() {
-            $("#@Html.IdForModel()").select2({
-                minimumResultsForSearch: @JavaScriptEncoder.Default.Encode(ViewData["MinimumItemsForSearch"]?.ToString()) || Infinity
-            });
+<script>
+    $(function() {
+        $("#@Html.IdForModel()").select2({
+            minimumResultsForSearch: @JavaScriptEncoder.Default.Encode(ViewData["MinimumItemsForSearch"]?.ToString()) || Infinity
         });
-    </script>
-}
-else
-{
-    <script>
-        $(function() {
-            $("#@Html.IdForModel()").select2({
-                tags: true,
-                createTag: function(params) {
-                    var term = $.trim(params.term);
-
-                    if (term === '') {
-                        return null;
-                    }
-
-                    return {
-                        id: term,
-                        text: term,
-                        newTag: true
-                    }
-                }
-            })
-        });
-    </script>
-}
+    });
+</script>
