@@ -22,6 +22,13 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.x'
+ # Added Restore dependencies step before build
+      - name: Restore dependencies
+        run: dotnet restore src/NopCommerce.sln  # Updated path to the solution file
+
+      # Changed dotnet build to specify the solution file with the correct path
+      - name: Build with dotnet
+        run: dotnet build src/NopCommerce.sln --configuration Release  # Updated to specify the correct solution path
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
