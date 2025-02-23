@@ -22,25 +22,18 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.x'
- # Added Restore dependencies step before build
-      - name: Restore dependencies
-        run: dotnet restore src/NopCommerce.sln  # Updated path to the solution file
 
-      # Changed dotnet build to specify the solution file with the correct path
       - name: Build with dotnet
-        run: dotnet build src/NopCommerce.sln --configuration Release  # Updated to specify the correct solution path
-
-      #- name: Build with dotnet
-      #  run: dotnet build --configuration Release
+        run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish src/NopCommerce.sln -c Release -o "${{ github.workspace }}/publish/myapp"
+        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ${{ github.workspace }}/publish/myapp  # Use GitHub workspace path
+          path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
     runs-on: windows-latest
@@ -61,9 +54,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_1E2A824802794198AC6A64621EEB3159 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1934B358427E4D9493E1DC1C483197F5 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_8BD6E25BFE2D4D5B92A628522FE84EFA }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_6E4243C39DE44520A6725E54A5280816 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_E9C7E9A53FE44F278A14EE73D6BD57D8 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_785B5DA8094446A4863404CBB8F0C965 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
