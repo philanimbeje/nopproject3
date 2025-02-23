@@ -34,13 +34,13 @@ jobs:
       #  run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish src/NopCommerce.sln -c Release -o "${{ github.workspace }}/myapp"
+        run: dotnet publish src/NopCommerce.sln -c Release -o "${{ github.workspace }}/publish/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ${{ github.workspace }}/myapp  # Use GitHub workspace path
+          path: ${{ github.workspace }}/publish/myapp  # Use GitHub workspace path
 
   deploy:
     runs-on: windows-latest
